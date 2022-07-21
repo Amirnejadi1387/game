@@ -1,0 +1,341 @@
+
+#include <stdio.h>
+#include <windows.h>
+#include <conio.h>
+#include <time.h>
+#include <ctime>
+
+const int N=20;
+const int M=20;
+
+enum direction {up,down,left,right};
+
+struct point {
+    int x,y;
+};
+
+struct sib {
+    point pos;
+    // timer...
+} s;
+
+struct snake {
+    int len;
+    point pos[N*M];
+    direction move;
+} r;
+
+void sleep(unsigned int mseconds) {
+    clock_t goal = mseconds + clock();
+    while (goal > clock());
+}
+
+void gotoxy(int x, int y) {
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD cursorCoord;
+    cursorCoord.X = x;
+    cursorCoord.Y = y;
+    SetConsoleCursorPosition(consoleHandle, cursorCoord);
+}
+
+void setTextColor(int textColor, int backColor = 0) {
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    int colorAttribute = backColor << 4 | textColor;
+    SetConsoleTextAttribute(consoleHandle, colorAttribute);
+}
+
+bool is_move_valid(int x,int y) {
+    for(int i=0; i<r.len-1; i++) {
+        if(	r.pos[i].x==x && r.pos[i].y==y) {
+            return false;
+        }
+    }
+    return !(x<=0 || x>=N-1 || y<=0 || y>=M-1);
+}
+
+void newSib(){
+	int x,y;
+    do{
+    	x = rand() % N;
+    	y = rand() % M;
+	}while(!is_move_valid(x,y));
+	s.pos={x,y};
+	gotoxy(s.pos.x,s.pos.y);
+    printf("%c",233);
+}
+
+bool eatSib(int x,int y) {
+	return s.pos.x==x && s.pos.y==y;
+}
+
+void initGame() {
+	srand(time(0));
+    r.len=3;
+    r.pos[0]= {N/2,M/2};
+    r.pos[1]= {N/2-1,M/2};
+    r.pos[2]= {N/2-2,M/2};
+    r.move = left;
+
+    for(int i=0; i<M; i++) {
+        for(int j=0; j<N; j++) {
+            if(i==0||i==M-1) {
+                printf("%c",196);
+            } else if(j==0||j==N-1) {
+                printf("%c",179);
+            } else {
+                printf(" ");
+            }
+        }
+        printf("\n");
+    }
+    
+    for(int 
+
+#include <stdio.h>
+#include <windows.h>
+#include <conio.h>
+#include <time.h>
+#include <ctime>
+
+const int N=20;
+const int M=20;
+
+enum direction {up,down,left,right};
+
+struct point {
+    int x,y;
+};
+
+struct sib {
+    point pos;
+    // timer...
+} s;
+
+struct snake {
+    int len;
+    point pos[N*M];
+    direction move;
+} r;
+
+void sleep(unsigned int mseconds) {
+    clock_t goal = mseconds + clock();
+    while (goal > clock());
+}
+
+void gotoxy(int x, int y) {
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD cursorCoord;
+    cursorCoord.X = x;
+    cursorCoord.Y = y;
+    SetConsoleCursorPosition(consoleHandle, cursorCoord);
+}
+
+void setTextColor(int textColor, int backColor = 0) {
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    int colorAttribute = backColor << 4 | textColor;
+    SetConsoleTextAttribute(consoleHandle, colorAttribute);
+}
+
+bool is_move_valid(int x,int y) {
+    for(int i=0; i<r.len-1; i++) {
+        if(	r.pos[i].x==x && r.pos[i].y==y) {
+            return false;
+        }
+    }
+    return !(x<=0 || x>=N-1 || y<=0 || y>=M-1);
+}
+
+void newSib(){
+	int x,y;
+    do{
+    	x = rand() % N;
+    	y = rand() % M;
+	}while(!is_move_valid(x,y));
+	s.pos={x,y};
+	gotoxy(s.pos.x,s.pos.y);
+    printf("%c",233);
+}
+
+bool eatSib(int x,int y) {
+	return s.pos.x==x && s.pos.y==y;
+}
+
+void initGame() {
+	srand(time(0));
+    r.len=3;
+    r.pos[0]= {N/2,M/2};
+    r.pos[1]= {N/2-1,M/2};
+    r.pos[2]= {N/2-2,M/2};
+    r.move = left;
+
+    for(int i=0; i<M; i++) {
+        for(int j=0; j<N; j++) {
+            if(i==0||i==M-1) {
+                printf("%c",196);
+            } else if(j==0||j==N-1) {
+                printf("%c",179);
+            } else {
+                printf(" ");
+            }
+        }
+        printf("\n");
+    }
+    
+    for(int i=0; i<3; i++) {
+        gotoxy(r.pos[i].x,r.pos[i].y);
+        printf("%c",177);
+    }
+    
+    newSib();
+}
+
+
+int main() {
+    initGame();
+    bool is_game_over=false;
+    while(!is_game_over) {
+        sleep(250);
+        // agar click berim bekhonim...!
+        if(_kbhit()) {
+            char move=getch();
+            if(move==224) {
+                move=getch();
+            }
+            switch(move) {
+                case 72:
+                    if(r.move!=down) {
+                        r.move=up;
+                    }
+                    break;
+                case 80:
+                    if(r.move!=up) {
+                        r.move=down;
+                    }
+                    break;
+                case 75:
+                    if(r.move!=right) {
+                        r.move=left;
+                    }
+                    break;
+                case 77:
+                    if(r.move!=left) {
+                        r.move=right;
+                    }
+                    break;
+            }
+        }
+        int pos_x,pos_y;
+        switch(r.move) {
+            case left:
+            	pos_x= r.pos[r.len-1].x-1;
+            	pos_y= r.pos[r.len-1].y;
+                if(!is_move_valid( pos_x, pos_y)) {
+                    is_game_over=true;
+                    break;
+                }
+                if(!eatSib(pos_x,pos_y)){
+	                gotoxy(r.pos[0].x,r.pos[0].y);
+	                printf(" ");
+	                //
+	                for(int i=0; i<r.len-1; i++) {
+	                    r.pos[i]=r.pos[i+1];
+	                }
+	                r.pos[r.len-1].x = pos_x;
+	                r.pos[r.len-1].y = pos_y;
+	                gotoxy(r.pos[r.len-1].x,r.pos[r.len-1].y);
+	                printf("%c",177);
+            	}else{
+            		r.len++;
+            		r.pos[r.len-1].x = pos_x;
+	                r.pos[r.len-1].y = pos_y;
+	                gotoxy(pos_x,pos_y);
+	                printf("%c",177);
+	                newSib();
+				}
+                break;
+            case right:
+            	pos_x= r.pos[r.len-1].x+1;
+            	pos_y= r.pos[r.len-1].y;
+                if(!is_move_valid(pos_x, pos_y)) {
+                    is_game_over=true;
+                    break;
+                }
+                if(!eatSib(pos_x, pos_y)){
+                    gotoxy(r.pos[0].x,r.pos[0].y);
+	                printf(" ");
+    	            //
+       		        for(int i=0; i<r.len-1; i++) {
+   				        r.pos[i]=r.pos[i+1];
+       	        	}
+                	r.pos[r.len-1].x = r.pos[r.len-1].x+1;
+                	gotoxy(r.pos[r.len-1].x,r.pos[r.len-1].y);
+                	printf("%c",177);
+				}
+				else{
+					r.len++;
+            		r.pos[r.len-1].x = pos_x;
+	                r.pos[r.len-1].y = pos_y;
+	                gotoxy(r.pos[r.len-1].x,r.pos[r.len-1].y);
+	                printf("%c",177);
+	                newSib();
+				}
+                break;
+            case up:
+            	pos_x=r.pos[r.len-1].x;
+            	pos_y= r.pos[r.len-1].y-1;
+                if(!is_move_valid(pos_x, pos_y)) {
+                    is_game_over=true;
+                    break;
+                }
+                if(!eatSib(pos_x, pos_y)){
+                    gotoxy(r.pos[0].x,r.pos[0].y);
+	                printf(" ");
+    	            //
+       		        for(int i=0; i<r.len-1; i++) {
+   				        r.pos[i]=r.pos[i+1];
+       	        	}
+                	r.pos[r.len-1].y = r.pos[r.len-1].y-1;
+                	gotoxy(r.pos[r.len-1].x,r.pos[r.len-1].y);
+                	printf("%c",177);
+				}
+				else{
+					r.len++;
+            		r.pos[r.len-1].x = pos_x;
+	                r.pos[r.len-1].y = pos_y;
+	                gotoxy(pos_x,pos_y);
+	                printf("%c",177);
+	                newSib();
+				}
+                break;
+            case down:
+            	pos_x=r.pos[r.len-1].x;
+            	pos_y= r.pos[r.len-1].y+1;
+                if(!is_move_valid(pos_x, pos_y)) {
+                    is_game_over=true;
+                    break;
+                }
+                if(!eatSib(pos_x, pos_y)){
+                    gotoxy(r.pos[0].x,r.pos[0].y);
+	                printf(" ");
+    	            //
+       		        for(int i=0; i<r.len-1; i++) {
+   				        r.pos[i]=r.pos[i+1];
+       	        	}
+                	r.pos[r.len-1].y = r.pos[r.len-1].y+1;
+                	gotoxy(r.pos[r.len-1].x,r.pos[r.len-1].y);
+                	printf("%c",177);
+				}
+				else{
+					r.len++;
+            		r.pos[r.len-1].x = pos_x;
+	                r.pos[r.len-1].y = pos_y;
+	                gotoxy(pos_x,pos_y);
+	                printf("%c",177);
+	                newSib();
+				}
+                break;
+        }
+    }
+    gotoxy(0,M+2);
+    printf("game over");
+}
